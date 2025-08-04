@@ -1,0 +1,333 @@
+openapi: 3.0.3
+info:
+  title: SHOPPIT
+  version: 1.0.0
+  description: Ecommerce API for Shoppit
+paths:
+  /add_address/:
+    post:
+      operationId: add_address_create
+      tags:
+      - add_address
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /add_review/:
+    post:
+      operationId: add_review_create
+      tags:
+      - add_review
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /add_to_cart/:
+    post:
+      operationId: add_to_cart_create
+      tags:
+      - add_to_cart
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /add_to_wishlist/:
+    post:
+      operationId: add_to_wishlist_create
+      tags:
+      - add_to_wishlist
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /categories/{slug}:
+    get:
+      operationId: categories_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - categories
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /category_list:
+    get:
+      operationId: category_list_retrieve
+      tags:
+      - category_list
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /create_checkout_session/:
+    post:
+      operationId: create_checkout_session_create
+      tags:
+      - create_checkout_session
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /create_user/:
+    post:
+      operationId: create_user_create
+      tags:
+      - create_user
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /delete_cartitem/{id}/:
+    delete:
+      operationId: delete_cartitem_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - delete_cartitem
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /delete_review/{id}/:
+    delete:
+      operationId: delete_review_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - delete_review
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /existing_user/{email}:
+    get:
+      operationId: existing_user_retrieve
+      parameters:
+      - in: path
+        name: email
+        schema:
+          type: string
+        required: true
+      tags:
+      - existing_user
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /get_address:
+    get:
+      operationId: get_address_retrieve
+      tags:
+      - get_address
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /get_cart/{cart_code}:
+    get:
+      operationId: get_cart_retrieve
+      parameters:
+      - in: path
+        name: cart_code
+        schema:
+          type: string
+        required: true
+      tags:
+      - get_cart
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /get_cart_stat:
+    get:
+      operationId: get_cart_stat_retrieve
+      tags:
+      - get_cart_stat
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /get_orders:
+    get:
+      operationId: get_orders_retrieve
+      tags:
+      - get_orders
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /my_wishlists:
+    get:
+      operationId: my_wishlists_retrieve
+      tags:
+      - my_wishlists
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /product_in_cart:
+    get:
+      operationId: product_in_cart_retrieve
+      tags:
+      - product_in_cart
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /product_in_wishlist:
+    get:
+      operationId: product_in_wishlist_retrieve
+      tags:
+      - product_in_wishlist
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /product_list:
+    get:
+      operationId: product_list_retrieve
+      tags:
+      - product_list
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /products/{slug}:
+    get:
+      operationId: products_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /search:
+    get:
+      operationId: search_retrieve
+      tags:
+      - search
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /update_cartitem_quantity/:
+    put:
+      operationId: update_cartitem_quantity_update
+      tags:
+      - update_cartitem_quantity
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /update_review/{id}/:
+    put:
+      operationId: update_review_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - update_review
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
