@@ -1,0 +1,21 @@
+[
+{
+    "model": "shoppit_app.customuser",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$870000$4FmftmnvDUh75b2I9YsTt9$LUA8CwyFNi8ihJ7GCZ9mnRjk8lmxgrEhJ7ySkkIRrA0=",
+        "last_login": "2025-08-04T19:29:20.203Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2025-08-04T19:27:45.944Z",
+        "email": "admin@gmail.com",
+        "profile_picture_url": null,
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

@@ -1,0 +1,314 @@
+[
+{
+    "model": "shoppit_app.product",
+    "pk": 1,
+    "fields": {
+        "name": "Gun",
+        "description": "Black gun toy",
+        "price": "550.00",
+        "slug": "gun",
+        "image": "product_img/gun.jpeg",
+        "featured": true,
+        "category": 5
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 2,
+    "fields": {
+        "name": "Bear",
+        "description": "Brown bear soft toy",
+        "price": "750.00",
+        "slug": "bear",
+        "image": "product_img/bear.jpeg",
+        "featured": true,
+        "category": 5
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 3,
+    "fields": {
+        "name": "Panda",
+        "description": "Panda soft toy",
+        "price": "750.00",
+        "slug": "panda",
+        "image": "product_img/panda.jpeg",
+        "featured": true,
+        "category": 5
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 4,
+    "fields": {
+        "name": "Car",
+        "description": "Smart car toy",
+        "price": "1100.00",
+        "slug": "car",
+        "image": "product_img/car.jpg",
+        "featured": true,
+        "category": 5
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 5,
+    "fields": {
+        "name": "Trailer",
+        "description": "Toy trailer",
+        "price": "1200.00",
+        "slug": "trailer",
+        "image": "product_img/toy-trailer.jpg",
+        "featured": true,
+        "category": 5
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 6,
+    "fields": {
+        "name": "Strawberry",
+        "description": "Strawberry",
+        "price": "250.00",
+        "slug": "strawberry",
+        "image": "product_img/strawberry.jpg",
+        "featured": false,
+        "category": 4
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 7,
+    "fields": {
+        "name": "Fried Fish",
+        "description": "fried fish",
+        "price": "500.00",
+        "slug": "fried-fish",
+        "image": "product_img/fried-fish.jpg",
+        "featured": false,
+        "category": 4
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 8,
+    "fields": {
+        "name": "Burger",
+        "description": "Burger overloaded with chips",
+        "price": "350.00",
+        "slug": "burger",
+        "image": "product_img/burger-chips.jpg",
+        "featured": false,
+        "category": 4
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 9,
+    "fields": {
+        "name": "Chocolate Cake",
+        "description": "chocolate cake",
+        "price": "350.00",
+        "slug": "chocolate-cake",
+        "image": "product_img/chocolate-cake.jpg",
+        "featured": false,
+        "category": 4
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 10,
+    "fields": {
+        "name": "Fried Spaghatti",
+        "description": "Fried Spaghatti",
+        "price": "370.00",
+        "slug": "fried-spaghatti",
+        "image": "product_img/fried-spaghetti.jpg",
+        "featured": false,
+        "category": 4
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 11,
+    "fields": {
+        "name": "Bhagavad Gita",
+        "description": "Bhagavad Gita",
+        "price": "500.00",
+        "slug": "bhagavad-gita",
+        "image": "product_img/Bhagavad-Gita.jpg",
+        "featured": false,
+        "category": 1
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 12,
+    "fields": {
+        "name": "The Hobbit",
+        "description": "The Hobbit",
+        "price": "1000.00",
+        "slug": "the-hobbit",
+        "image": "product_img/The-Hobbit.jpg",
+        "featured": false,
+        "category": 1
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 13,
+    "fields": {
+        "name": "Atomic Habits",
+        "description": "Atomic Habits",
+        "price": "999.00",
+        "slug": "atomic-habits",
+        "image": "product_img/Atomic-Habits.jpg",
+        "featured": false,
+        "category": 1
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 14,
+    "fields": {
+        "name": "Harry Potter",
+        "description": "Harry Potter",
+        "price": "1200.00",
+        "slug": "harry-potter",
+        "image": "product_img/Harry-Potter.jpg",
+        "featured": true,
+        "category": 1
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 15,
+    "fields": {
+        "name": "The Lord of the Rings",
+        "description": "The Lord of the Rings",
+        "price": "1525.00",
+        "slug": "lord-of-the-rings",
+        "image": "product_img/The-Lord-of-the-Rings.jpeg",
+        "featured": false,
+        "category": 1
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 16,
+    "fields": {
+        "name": "Milky Jacket",
+        "description": "The Milky Jacket combines contemporary fashion with cozy comfort, making it a versatile addition to any wardrobe. Crafted from high-quality materials, it offers warmth without compromising on style. Its neutral tones and minimalist design allow for easy pairing with various outfits, from casual jeans to formal attire.",
+        "price": "2500.00",
+        "slug": "jacket",
+        "image": "product_img/milky-jacket.jpg",
+        "featured": false,
+        "category": 2
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 17,
+    "fields": {
+        "name": "Jeans",
+        "description": "Jeans pant",
+        "price": "1700.00",
+        "slug": "pant",
+        "image": "product_img/pant.jpg",
+        "featured": false,
+        "category": 2
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 18,
+    "fields": {
+        "name": "Socks",
+        "description": "Socks",
+        "price": "350.00",
+        "slug": "socks",
+        "image": "product_img/shocks.jpg",
+        "featured": false,
+        "category": 2
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 19,
+    "fields": {
+        "name": "Black Sport Shoe",
+        "description": "Black Sport Shoe",
+        "price": "2200.00",
+        "slug": "shoe",
+        "image": "product_img/shoes.jpg",
+        "featured": false,
+        "category": 2
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 20,
+    "fields": {
+        "name": "Indian Kurthi",
+        "description": "Indian Kurthi - men",
+        "price": "2000.00",
+        "slug": "kurthi",
+        "image": "product_img/kurtha.jpg",
+        "featured": false,
+        "category": 2
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 21,
+    "fields": {
+        "name": "Shirts",
+        "description": "Shirts",
+        "price": "1700.00",
+        "slug": "shirts",
+        "image": "product_img/Shirt.jpg",
+        "featured": false,
+        "category": 2
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 22,
+    "fields": {
+        "name": "Smart Watch Black",
+        "description": "Black Smart Watch",
+        "price": "2850.00",
+        "slug": "watch",
+        "image": "product_img/Smart-watch-black.jpg",
+        "featured": false,
+        "category": 3
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 23,
+    "fields": {
+        "name": "Sony Camera",
+        "description": "Sony Camera",
+        "price": "175000.00",
+        "slug": "camera-sony",
+        "image": "product_img/sony-camera.jpg",
+        "featured": false,
+        "category": 3
+    }
+},
+{
+    "model": "shoppit_app.product",
+    "pk": 24,
+    "fields": {
+        "name": "Joystick",
+        "description": "Joystick -gaming",
+        "price": "700.00",
+        "slug": "joystick",
+        "image": "product_img/joystick.jpg",
+        "featured": false,
+        "category": 3
+    }
+}
+]
