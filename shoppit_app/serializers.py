@@ -118,6 +118,14 @@ class CartItemSerializer(serializers.ModelSerializer):
         return total
 
 
+# serializers.py
+class UpdateCartItemSerializer(serializers.Serializer):
+    item_id = serializers.IntegerField()
+    quantity = serializers.IntegerField(min_value=1)
+
+
+
+
 
 class CartSerializer(serializers.ModelSerializer):
     cartitems = CartItemSerializer(read_only=True, many=True)
@@ -130,7 +138,12 @@ class CartSerializer(serializers.ModelSerializer):
         items = cart.cartitems.all()
         total = sum([item.quantity * item.product.price for item in items])
         return total
-    
+
+class AddToCartSerializer(serializers.Serializer):
+    cart_code = serializers.CharField()
+    product_id = serializers.IntegerField()
+
+
 
 class CartStatSerializer(serializers.ModelSerializer): 
     total_quantity = serializers.SerializerMethodField()

@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Cart, CartItem, Category, CustomerAddress, Order, OrderItem, Product, Review, Wishlist
-from .serializers import CartItemSerializer, CartSerializer, CategoryDetailSerializer, CategoryListSerializer, CustomerAddressSerializer, OrderSerializer, ProductListSerializer, ProductDetailSerializer, ReviewSerializer, ReviewCreateSerializer, SimpleCartSerializer, UserSerializer, WishlistSerializer
+from .serializers import CartItemSerializer, UpdateCartItemSerializer, CartSerializer, AddToCartSerializer, CategoryDetailSerializer, CategoryListSerializer, CustomerAddressSerializer, OrderSerializer, ProductListSerializer, ProductDetailSerializer, ReviewSerializer, ReviewCreateSerializer, SimpleCartSerializer, UserSerializer, WishlistSerializer
 
 
 from django.http import HttpResponse
@@ -49,10 +49,18 @@ def category_detail(request, slug):
     return Response(serializer.data)
 
 
+
+@extend_schema(
+    request=AddToCartSerializer,
+    responses=CartSerializer,
+)
 @api_view(["POST"])
 def add_to_cart(request):
-    cart_code = request.data.get("cart_code")
-    product_id = request.data.get("product_id")
+    serializer = AddToCartSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    cart_code = serializer.validated_data["cart_code"]
+    product_id = serializer.validated_data["product_id"]
 
     cart, created = Cart.objects.get_or_create(cart_code=cart_code)
     product = Product.objects.get(id=product_id)
@@ -65,19 +73,30 @@ def add_to_cart(request):
     return Response(serializer.data)
 
 
+
+
+@extend_schema(
+    request=UpdateCartItemSerializer,
+    responses=CartItemSerializer,
+)
 @api_view(['PUT'])
 def update_cartitem_quantity(request):
-    cartitem_id = request.data.get("item_id")
-    quantity = request.data.get("quantity")
+    serializer = UpdateCartItemSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
 
-    quantity = int(quantity)
+    cartitem_id = serializer.validated_data["item_id"]
+    quantity = serializer.validated_data["quantity"]
 
     cartitem = CartItem.objects.get(id=cartitem_id)
-    cartitem.quantity = quantity 
+    cartitem.quantity = quantity
     cartitem.save()
 
-    serializer = CartItemSerializer(cartitem)
-    return Response({"data": serializer.data, "message": "Cartitem updated successfully!"})
+    response_serializer = CartItemSerializer(cartitem)
+    
+    return Response({
+        "data": response_serializer.data,
+        "message": "Cart item updated successfully!"
+    })
 
 
 
