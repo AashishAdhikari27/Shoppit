@@ -23,7 +23,6 @@ urlpatterns = [
     path("create_checkout_session/", views.create_checkout_session, name="create_checkout_session"),
     path("webhook/", views.my_webhook_view, name="webhook"),
 
-    # Newly Added
 
     path("get_orders", views.get_orders, name="get_orders"),
     path("create_user/", views.create_user, name="create_user"),
@@ -37,11 +36,14 @@ urlpatterns = [
     path("product_in_cart", views.product_in_cart, name="product_in_cart"),
 
 
+    ## API Documentation URLs
+
     # URL for API schema documentation
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 
     ## For swagger UI API documentation
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    # path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
     ## For ReDoc API documentation
     path('api/redoc/docs/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),

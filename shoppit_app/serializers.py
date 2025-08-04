@@ -27,6 +27,13 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "rating", "review", "created", "updated"]
 
 
+class ReviewCreateSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()
+    email = serializers.EmailField()
+    rating = serializers.IntegerField(min_value=1, max_value=5)
+    review = serializers.CharField()
+
+
 class ProductRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductRating 

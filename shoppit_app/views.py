@@ -6,11 +6,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Cart, CartItem, Category, CustomerAddress, Order, OrderItem, Product, Review, Wishlist
-from .serializers import CartItemSerializer, CartSerializer, CategoryDetailSerializer, CategoryListSerializer, CustomerAddressSerializer, OrderSerializer, ProductListSerializer, ProductDetailSerializer, ReviewSerializer, SimpleCartSerializer, UserSerializer, WishlistSerializer
+from .serializers import CartItemSerializer, CartSerializer, CategoryDetailSerializer, CategoryListSerializer, CustomerAddressSerializer, OrderSerializer, ProductListSerializer, ProductDetailSerializer, ReviewSerializer, ReviewCreateSerializer, SimpleCartSerializer, UserSerializer, WishlistSerializer
 
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
+from drf_spectacular.utils import extend_schema
 
 # # Create your views here.
 # stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -79,12 +81,23 @@ def update_cartitem_quantity(request):
 
 
 
+
+
+
+
+@extend_schema(
+    request=ReviewCreateSerializer,
+    responses=ReviewSerializer,
+)
 @api_view(["POST"])
 def add_review(request):
-    
-    product_id = request.data.get("product_id")
-    email = request.data.get("email")
-    rating = request.data.get("rating")
+
+    serializer = ReviewCreateSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    product_id = serializer.validated_data.get("product_id")
+    email = serializer.validated_data.get("email")
+    rating = serializer.validated_data.get("rating")
     review_text = request.data.get("review")
 
     product = Product.objects.get(id=product_id)
@@ -94,8 +107,17 @@ def add_review(request):
         return Response({"error": "You already dropped a review for this product"}, status=400)
 
     review  = Review.objects.create(product=product, user=user, rating=rating, review=review_text)
+
     serializer = ReviewSerializer(review)
+    
     return Response(serializer.data)
+
+
+
+
+
+
+
 
 
 @api_view(['PUT'])
