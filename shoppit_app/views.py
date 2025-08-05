@@ -1,12 +1,18 @@
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
+from functools import reduce
+from operator import or_
 from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Cart, CartItem, Category, CustomerAddress, Order, OrderItem, Product, Review, Wishlist
-from .serializers import CartItemSerializer, UpdateCartItemSerializer, CartSerializer, AddToCartSerializer, CategoryDetailSerializer, CategoryListSerializer, CustomerAddressSerializer, OrderSerializer, ProductListSerializer, ProductDetailSerializer, ReviewSerializer, ReviewCreateSerializer, SimpleCartSerializer, UserSerializer, WishlistSerializer
+
+
+
+from .serializers import CartItemSerializer, UpdateCartItemSerializer, CartSerializer, AddToCartSerializer, CategoryDetailSerializer, CategoryListSerializer, CustomerAddressSerializer, OrderSerializer, ProductListSerializer, ProductDetailSerializer, ReviewSerializer, UpdateReviewSerializer, ReviewCreateSerializer, SimpleCartSerializer, UserSerializer, WishlistSerializer, UpdateWishlistSerializer, UserCreateSerializer
+
 
 
 from django.http import HttpResponse
@@ -14,12 +20,19 @@ from django.views.decorators.csrf import csrf_exempt
 
 from drf_spectacular.utils import extend_schema
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.types import OpenApiTypes
+
 # # Create your views here.
 # stripe.api_key = settings.STRIPE_SECRET_KEY
 # endpoint_secret = settings.WEBHOOK_SECRET
 
 
+## Getting custom user model of the project
 User = get_user_model()
+
+
+
 
 @api_view(['GET'])
 def product_list(request):
@@ -138,19 +151,29 @@ def add_review(request):
 
 
 
-
+@extend_schema(
+    request=UpdateReviewSerializer,  
+    responses=ReviewSerializer       
+)
 @api_view(['PUT'])
 def update_review(request, pk):
-    review = Review.objects.get(id=pk) 
-    rating = request.data.get("rating")
-    review_text = request.data.get("review")
 
-    review.rating = rating 
-    review.review = review_text
+    serializer = UpdateReviewSerializer(data=request.data)
+
+    serializer.is_valid(raise_exception=True)
+
+    review = Review.objects.get(id=pk) 
+
+    review.rating = serializer.validated_data["rating"]
+    review.review = serializer.validated_data["review"]
+
     review.save()
 
-    serializer = ReviewSerializer(review)
-    return Response(serializer.data)
+    response_serializer = ReviewSerializer(review)
+
+    return Response(response_serializer.data)
+
+
 
 
 @api_view(['DELETE'])
@@ -169,32 +192,70 @@ def delete_cartitem(request, pk):
 
 
 
+@extend_schema(
+    request=UpdateWishlistSerializer,
+    responses={201: WishlistSerializer, 204: OpenApiTypes.STR},
+)
 @api_view(['POST'])
-def add_to_wishlist(request):
-    email = request.data.get("email")
-    product_id = request.data.get("product_id")
+def update_wishlist(request):
+
+    serializer = UpdateWishlistSerializer(data=request.data)
+
+    serializer.is_valid(raise_exception=True)
+
+    email = serializer.validated_data["email"]
+    product_id = serializer.validated_data["product_id"]
 
     user = User.objects.get(email=email)
-    product = Product.objects.get(id=product_id) 
+    product = Product.objects.get(id=product_id)
 
     wishlist = Wishlist.objects.filter(user=user, product=product)
-    if wishlist:
+
+    if wishlist.exists():
         wishlist.delete()
-        return Response("Wishlist deleted successfully!", status=204)
+        return Response("Wishlist deleted successfully !", status=204)
 
     new_wishlist = Wishlist.objects.create(user=user, product=product)
-    serializer = WishlistSerializer(new_wishlist)
-    return Response(serializer.data)
 
+    response_serializer = WishlistSerializer(new_wishlist)
+
+    return Response(response_serializer.data, status=201)
+
+
+
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name='query',
+            description='Search keyword(s) for product name, description, or category name',
+            required=True,
+            type=OpenApiTypes.STR,
+            location=OpenApiParameter.QUERY,
+        ),
+    ],
+    responses=ProductListSerializer(many=True),
+)
 @api_view(['GET'])
 def product_search(request):
-    query = request.query_params.get("query") 
+    query = request.query_params.get("query")
     if not query:
-        return Response("No query provided", status=400)
-    
-    products = Product.objects.filter(Q(name__icontains=query) | 
-                                      Q(description__icontains=query) |
-                                       Q(category__name__icontains=query) )
+        return Response({"detail": "No query provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+    keywords = query.strip().split()
+
+    # Build Q objects for each keyword
+    q_objects = [
+        Q(name__icontains=kw) |
+        Q(description__icontains=kw) |
+        Q(category__name__icontains=kw)
+        for kw in keywords
+    ]
+
+    # Combine all Q objects with OR
+    final_query = reduce(or_, q_objects)
+
+    products = Product.objects.filter(final_query).distinct()
     serializer = ProductListSerializer(products, many=True)
     return Response(serializer.data)
     
@@ -311,18 +372,21 @@ def fulfill_checkout(session, cart_code):
 # Newly Added
 
 
+@extend_schema(
+    request=UserCreateSerializer,
+    responses={201: UserSerializer},
+    description="Create a new user with username, email, first_name, last_name, and profile_picture_url"
+)
 @api_view(["POST"])
 def create_user(request):
-    username = request.data.get("username")
-    email = request.data.get("email")
-    first_name = request.data.get("first_name")
-    last_name = request.data.get("last_name")
-    profile_picture_url = request.data.get("profile_picture_url")
+    serializer = UserCreateSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    new_user = serializer.save()
+    output_serializer = UserSerializer(new_user)
+    return Response(output_serializer.data, status=status.HTTP_201_CREATED)
 
-    new_user = User.objects.create(username=username, email=email,
-                                       first_name=first_name, last_name=last_name, profile_picture_url=profile_picture_url)
-    serializer = UserSerializer(new_user)
-    return Response(serializer.data)
+
+
 
 
 @api_view(["GET"])
@@ -379,12 +443,36 @@ def get_address(request):
     return Response({"error": "Address not found"}, status=200)
 
 
+
+
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="email",
+            type=OpenApiTypes.EMAIL,
+            location=OpenApiParameter.QUERY,
+            required=True,
+            description="User email to filter wishlists"
+        ),
+    ],
+    responses=WishlistSerializer(many=True),
+)
 @api_view(["GET"])
 def my_wishlists(request):
+
     email = request.query_params.get("email")
+
+    if not email:
+        return Response({"error": "Email is required"}, status=400)
+
+
     wishlists = Wishlist.objects.filter(user__email=email)
+
     serializer = WishlistSerializer(wishlists, many=True)
+
     return Response(serializer.data)
+
 
 
 @api_view(["GET"])
@@ -422,6 +510,16 @@ def get_cart_stat(request):
     return Response({"error": "Cart not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
+
+
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name='cart_code', type=OpenApiTypes.STR, location=OpenApiParameter.QUERY, required=True),
+        OpenApiParameter(name='product_id', type=OpenApiTypes.INT, location=OpenApiParameter.QUERY, required=True),
+    ],
+    responses={"200": OpenApiTypes.OBJECT},  # or you can define a response schema too
+)
 @api_view(['GET'])
 def product_in_cart(request):
     cart_code = request.query_params.get("cart_code")
@@ -430,7 +528,10 @@ def product_in_cart(request):
     cart = Cart.objects.filter(cart_code=cart_code).first()
     product = Product.objects.get(id=product_id)
     
-    product_exists_in_cart = CartItem.objects.filter(cart=cart, product=product).exists()
+    # product_exists_in_cart = CartItem.objects.filter(cart=cart, product=product).exists()
 
-    return Response({'product_in_cart': product_exists_in_cart})
+    product_exists_in_cart = CartItem.objects.filter(cart=cart, product=product)
+
+    serializer = CartItemSerializer(product_exists_in_cart, many=True)
+    return Response(serializer.data)
 

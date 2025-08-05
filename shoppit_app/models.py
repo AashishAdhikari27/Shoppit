@@ -134,7 +134,7 @@ class Wishlist(models.Model):
 
 
 class Order(models.Model):
-    stripe_checkout_id = models.CharField(max_length=255, unique=True)
+    checkout_id = models.CharField(max_length=255, unique=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=10)
     customer_email = models.EmailField()

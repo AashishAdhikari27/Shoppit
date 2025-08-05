@@ -1,7 +1,9 @@
 from rest_framework import serializers 
 from django.contrib.auth import get_user_model
 from .models import Cart, CartItem, CustomerAddress, Order, OrderItem, Product, Category, ProductRating, Review, Wishlist
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 
 
@@ -18,13 +20,43 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ["id", "email", "username", "first_name", "last_name", "profile_picture_url"]
 
-    
+
+class UserCreateSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True, min_length=4)
+    first_name = serializers.CharField(max_length=150, required=False, allow_blank=True)
+    last_name = serializers.CharField(max_length=150, required=False, allow_blank=True)
+    profile_picture_url = serializers.URLField(required=False, allow_blank=True)
+
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("Username already exists")
+        return value
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Email already registered")
+        return value
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User.objects.create_user(password=password, **validated_data)
+        return user
+
+
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     class Meta:
         model = Review 
         fields = ["id", "user", "rating", "review", "created", "updated"]
+
+
+class UpdateReviewSerializer(serializers.Serializer):
+    rating = serializers.IntegerField(min_value=1, max_value=5)
+    review = serializers.CharField()
 
 
 class ReviewCreateSerializer(serializers.Serializer):
@@ -166,6 +198,14 @@ class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist 
         fields = ["id", "user", "product", "created"]
+
+
+
+class UpdateWishlistSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    product_id = serializers.IntegerField()
+
+
 
 
 
